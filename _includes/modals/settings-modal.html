@@ -1,0 +1,230 @@
+<!-- settings-modal.html - Modal Pengaturan Global -->
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mx-3">
+        <div class="modal-content border-0" style="border-radius: 24px;">
+            <div class="modal-body p-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-800 m-0">
+                        <i class="bi bi-gear-fill me-2" style="color: var(--primary-green);"></i>
+                        PANEL KONTROL
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+
+                <!-- Quick Actions Grid -->
+                <div class="settings-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <!-- Tambah Materi (khusus Olympedia) -->
+                    {% if page.app == "olympedia" %}
+                    <div class="setting-card" onclick="OLYMPEDIA.showAddForm()" style="background: #F8F9FA; border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer;">
+                        <i class="bi bi-file-earmark-plus-fill fs-2" style="color: var(--primary-green);"></i>
+                        <span class="d-block small fw-800 mt-2">TAMBAH MATERI</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Tambah Roadmap (khusus OLYMAP) -->
+                    {% if page.app == "olymap" %}
+                    <div class="setting-card" onclick="OLYMAP.openEditor()" style="background: #F8F9FA; border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer;">
+                        <i class="bi bi-plus-circle-fill fs-2" style="color: var(--primary-blue);"></i>
+                        <span class="d-block small fw-800 mt-2">TAMBAH ROADMAP</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Tambah Catatan (khusus OLYMNOTE) -->
+                    {% if page.app == "olymnote" %}
+                    <div class="setting-card" onclick="OLYMNOTE.openForm()" style="background: #F8F9FA; border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer;">
+                        <i class="bi bi-pencil-square fs-2" style="color: var(--primary-purple);"></i>
+                        <span class="d-block small fw-800 mt-2">TAMBAH ISTILAH</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Share App (semua app) -->
+                    <div class="setting-card" onclick="shareWOIPS()" style="background: #F8F9FA; border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer;">
+                        <i class="bi bi-share-fill fs-2" style="color: var(--primary-yellow);"></i>
+                        <span class="d-block small fw-800 mt-2">BAGIKAN</span>
+                    </div>
+
+                    <!-- Ekspor Data -->
+                    <div class="setting-card" onclick="exportAppData()" style="background: #F8F9FA; border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer;">
+                        <i class="bi bi-cloud-download-fill fs-2" style="color: var(--primary-blue);"></i>
+                        <span class="d-block small fw-800 mt-2">EKSPOR DATA</span>
+                    </div>
+
+                    <!-- Impor Data -->
+                    <div class="setting-card" onclick="document.getElementById('importFileInput').click()" style="background: #F8F9FA; border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer;">
+                        <i class="bi bi-cloud-upload-fill fs-2" style="color: var(--primary-purple);"></i>
+                        <span class="d-block small fw-800 mt-2">IMPOR DATA</span>
+                    </div>
+
+                    <!-- Reset Data (warning) -->
+                    <div class="setting-card" onclick="confirmResetData()" style="background: #F8F9FA; border: 2px solid var(--border-color); border-radius: 16px; padding: 15px; text-align: center; cursor: pointer; grid-column: span 2;">
+                        <i class="bi bi-exclamation-triangle-fill fs-2" style="color: var(--primary-red);"></i>
+                        <span class="d-block small fw-800 mt-2">RESET DATA APLIKASI</span>
+                    </div>
+                </div>
+
+                <!-- Hidden file input for import -->
+                <input type="file" id="importFileInput" style="display: none;" accept=".json" onchange="handleFileImport(this)">
+
+                <!-- Help Link -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-link text-decoration-none small fw-bold" 
+                            onclick="openHelpModal()"
+                            style="color: var(--primary-green);">
+                        <i class="bi bi-question-circle-fill me-1"></i>
+                        Butuh bantuan? Lihat Panduan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global functions for settings modal
+function shareWOIPS() {
+    const text = "Aku nemuin platform keren buat belajar OSN IPS! WOIPS punya 3 aplikasi dalam 1: Gudang Materi, Roadmap Belajar, dan Glosarium Istilah. Cek di https://woips.zone.id";
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'WOIPS - Wahana Olimpiade IPS',
+            text: text,
+            url: 'https://woips.zone.id'
+        });
+    } else {
+        navigator.clipboard.writeText(text);
+        WOIPS.toast('Teks promosi disalin!', 'success');
+    }
+}
+
+function exportAppData() {
+    const currentApp = WOIPS.getCurrentApp();
+    let data = null;
+    let filename = '';
+
+    switch(currentApp) {
+        case 'olympedia':
+            data = OLYMPEDIA.data;
+            filename = 'olympedia_backup.json';
+            break;
+        case 'olymap':
+            data = OLYMAP.data;
+            filename = 'olymap_backup.json';
+            break;
+        case 'olymnote':
+            data = OLYMNOTE.data;
+            filename = 'olymnote_backup.json';
+            break;
+        default:
+            // Export all data
+            data = {
+                olympedia: OLYMPEDIA?.data || [],
+                olymap: OLYMAP?.data || {},
+                olymnote: OLYMNOTE?.data || [],
+                bookmarks: OLYMPEDIA?.bookmarks || []
+            };
+            filename = 'woips_full_backup.json';
+    }
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    WOIPS.toast('Data berhasil diekspor!', 'success');
+}
+
+function handleFileImport(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            const currentApp = WOIPS.getCurrentApp();
+            
+            // Validate and import based on current app
+            if (currentApp === 'olympedia' && Array.isArray(data)) {
+                OLYMPEDIA.data = data;
+                OLYMPEDIA.saveData();
+                OLYMPEDIA.render();
+                WOIPS.toast('Data Olympedia berhasil diimpor!', 'success');
+            }
+            else if (currentApp === 'olymap' && typeof data === 'object') {
+                OLYMAP.data = data;
+                OLYMAP.saveData();
+                OLYMAP.render();
+                WOIPS.toast('Data OLYMAP berhasil diimpor!', 'success');
+            }
+            else if (currentApp === 'olymnote' && Array.isArray(data)) {
+                OLYMNOTE.data = data;
+                OLYMNOTE.saveData();
+                OLYMNOTE.render();
+                WOIPS.toast('Data OLYMNOTE berhasil diimpor!', 'success');
+            }
+            else {
+                WOIPS.toast('Format file tidak sesuai dengan aplikasi saat ini', 'error');
+            }
+        } catch (err) {
+            WOIPS.toast('File JSON tidak valid', 'error');
+        }
+    };
+    reader.readAsText(file);
+    
+    // Reset input
+    input.value = '';
+}
+
+function confirmResetData() {
+    WOIPS.confirm('Reset Data?', 'Semua data akan dihapus permanen. Lanjutkan?', () => {
+        const currentApp = WOIPS.getCurrentApp();
+        
+        switch(currentApp) {
+            case 'olympedia':
+                OLYMPEDIA.data = OLYMPEDIA_DEFAULT_DATA;
+                OLYMPEDIA.bookmarks = [];
+                OLYMPEDIA.saveData();
+                localStorage.removeItem(WOIPS_CONFIG.apps.olympedia.bookmarkKey);
+                OLYMPEDIA.render();
+                break;
+            case 'olymap':
+                OLYMAP.data = OLYMAP_DEFAULT_DATA;
+                OLYMAP.saveData();
+                OLYMAP.render();
+                break;
+            case 'olymnote':
+                OLYMNOTE.data = OLYMNOTE_DEFAULT_DATA;
+                OLYMNOTE.saveData();
+                OLYMNOTE.render();
+                break;
+        }
+        
+        WOIPS.toast('Data telah direset ke default', 'success');
+    });
+}
+
+function openHelpModal() {
+    // Close settings modal
+    bootstrap.Modal.getInstance(document.getElementById('settingsModal')).hide();
+    // Open help modal
+    setTimeout(() => {
+        new bootstrap.Modal(document.getElementById('helpModal')).show();
+    }, 300);
+}
+</script>
+
+<style>
+.setting-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-color: var(--primary-green) !important;
+}
+
+.setting-card:active {
+    transform: translateY(0);
+}
+</style>

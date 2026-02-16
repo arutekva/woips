@@ -1,0 +1,47 @@
+<!-- olymnote-header.html - Header spesifik untuk OLYMNOTE -->
+{% assign app = site.data.navigation.apps.olymnote %}
+
+<div class="olymnote-header">
+    <!-- Search Wrapper -->
+    <div class="olymnote-search-wrapper px-3 mt-2">
+        <i class="bi bi-search olympnote-search-icon"></i>
+        <input type="text" 
+               id="olymnote-search" 
+               class="olymnote-search-input" 
+               placeholder="Cari istilah...">
+    </div>
+
+    <!-- Filter Accordion -->
+    <div class="olymnote-filter-accordion mx-3 my-2">
+        <div class="olymnote-filter-header">
+            <span><i class="bi bi-funnel me-1"></i> Filter Kategori</span>
+            <i class="bi bi-chevron-down" id="olymnote-accordion-icon"></i>
+        </div>
+        <div class="olymnote-filter-content" id="olymnote-filter-content">
+            {% for category in app.categories %}
+            <div class="olymnote-tag-pill {% if forloop.first %}active{% endif %}" 
+                 data-filter="{{ category.slug }}"
+                 onclick="OLYMNOTE.setFilter('{{ category.slug }}', this)">
+                {{ category.name }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="px-3 mb-2">
+        <span class="small fw-800 text-muted" id="olymnote-stats">MEMUAT...</span>
+    </div>
+</div>
+
+<script>
+// Initialize filter
+document.addEventListener('DOMContentLoaded', () => {
+    const currentFilter = OLYMNOTE?.filter || 'ALL';
+    document.querySelectorAll('.olymnote-tag-pill').forEach(el => {
+        if (el.dataset.filter === currentFilter) {
+            el.classList.add('active');
+        }
+    });
+});
+</script>

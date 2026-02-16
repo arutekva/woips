@@ -1,0 +1,112 @@
+# Konfigurasi Navigasi untuk WOIPS Platform
+
+# Main Navigation (Bottom Nav)
+main_nav:
+  - name: "BERANDA"
+    url: "/"
+    icon: "bi-house-door-fill"
+    app: "home"
+  - name: "OLYMPEDIA"
+    url: "/olympedia/"
+    icon: "bi-collection-play-fill"
+    app: "olympedia"
+    color: "#58CC02"
+  - name: "OLYMAP"
+    url: "/olymap/"
+    icon: "bi-map-fill"
+    app: "olymap"
+    color: "#1CB0F6"
+  - name: "OLYMNOTE"
+    url: "/olymnote/"
+    icon: "bi-layers-fill"
+    app: "olymnote"
+    color: "#CE82FF"
+
+# Apps Configuration
+apps:
+  olympedia:
+    name: "OLYMPEDIA"
+    fullname: "Gudang Materi OSN IPS"
+    tagline: "Koleksi materi terlengkap"
+    color: "#58CC02"
+    icon: "bi-collection-play-fill"
+    categories:
+      - name: "Semua"
+        slug: "semua"
+      - name: "Geografi"
+        slug: "geografi"
+      - name: "Ekonomi"
+        slug: "ekonomi"
+      - name: "Sejarah"
+        slug: "sejarah"
+      - name: "Sosiologi"
+        slug: "sosiologi"
+      - name: "Soal"
+        slug: "soal"
+  
+  olymap:
+    name: "OLYMAP"
+    fullname: "Roadmap Belajar OSN"
+    tagline: "Peta perjalanan menuju sukses"
+    color: "#1CB0F6"
+    icon: "bi-map-fill"
+    tabs:
+      - name: "Geografi"
+        slug: "geo"
+        icon: "🗺️"
+      - name: "Ekonomi"
+        slug: "eco"
+        icon: "📈"
+      - name: "Sejarah"
+        slug: "his"
+        icon: "📜"
+      - name: "Sosiologi"
+        slug: "soc"
+        icon: "🫂"
+  
+  olymnote:
+    name: "OLYMNOTE"
+    fullname: "Glosarium Istilah OSN"
+    tagline: "Pahami istilah sulit dengan mudah"
+    color: "#CE82FF"
+    icon: "bi-layers-fill"
+    categories:
+      - name: "SEMUA"
+        slug: "ALL"
+      - name: "GEOGRAFI"
+        slug: "GEOGRAFI"
+      - name: "SOSIOLOGI"
+        slug: "SOSIOLOGI"
+      - name: "EKONOMI"
+        slug: "EKONOMI"
+      - name: "SEJARAH"
+        slug: "SEJARAH"
+
+# Footer Links
+footer_links:
+  - title: "Tentang WOIPS"
+    url: "/tentang"
+  - title: "Panduan"
+    url: "/panduan"
+  - title: "Privasi"
+    url: "/privasi"
+  - title: "Kontak"
+    url: "/kontak"
+  - title: "Studekasa"
+    url: "https://studekasa.web.id"
+    external: true
+
+# Social Media
+social_links:
+  - platform: "Instagram"
+    url: "https://instagram.com/studekasa"
+    icon: "bi-instagram"
+  - platform: "TikTok"
+    url: "https://tiktok.com/@studekasa"
+    icon: "bi-tiktok"
+  - platform: "Email"
+    url: "mailto:studekasa@outlook.com"
+    icon: "bi-envelope"
+  - platform: "GitHub"
+    url: "https://github.com/studekasa"
+    icon: "bi-github"

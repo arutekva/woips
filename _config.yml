@@ -1,0 +1,80 @@
+# Konfigurasi Utama Jekyll untuk WOIPS Platform
+title: "WOIPS - Wahana Olimpiade IPS"
+email: studekasa@outlook.com
+description: >-
+  Platform terintegrasi untuk pejuang OSN IPS. 
+  Gudang materi (OLYMPEDIA), catatan istilah (OLYMNOTE), 
+  dan roadmap belajar (OLYMAP).
+baseurl: "" # kosong untuk root domain
+url: "https://woips.zone.id" 
+twitter_username: studekasa
+github_username: studekasa
+
+# Build settings
+theme: null
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Markdown settings
+markdown: kramdown
+highlighter: rouge
+
+# Permalinks
+permalink: /:title/
+
+# Exclude files from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .gitignore
+  - README.md
+  - LICENSE
+
+# Default layouts
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+  - scope:
+      path: "olymedia"
+    values:
+      layout: "app"
+      app: "olymedia"
+  - scope:
+      path: "olymap"
+    values:
+      layout: "app"
+      app: "olymap"
+  - scope:
+      path: "olymnote"
+    values:
+      layout: "app"
+      app: "olymnote"
+  - scope:
+      path: "olymedia/file"
+    values:
+      layout: "file"
+      app: "olymedia"
+
+# Custom variables
+woips:
+  version: "1.0.0"
+  author: "Studekasa"
+  repo: "https://github.com/studekasa/woips"
+  apps:
+    - name: "olymedia"
+      title: "OLYMPEDIA"
+      icon: "bi-collection-play-fill"
+      color: "#58CC02"
+    - name: "olymap"
+      title: "OLYMAP"
+      icon: "bi-map-fill"
+      color: "#1CB0F6"
+    - name: "olymnote"
+      title: "OLYMNOTE"
+      icon: "bi-layers-fill"
+      color: "#CE82FF"

@@ -1,0 +1,166 @@
+// _themes.scss - Tema warna per aplikasi dan komponen
+// Author: Studekasa
+
+@use 'variables' as *;
+
+// ===== THEME PER APLIKASI =====
+@each $app, $map in $apps {
+    .theme-#{$app} {
+        // Warna utama aplikasi
+        .app-color {
+            color: map-get($map, 'color');
+        }
+        
+        .app-bg {
+            background: map-get($map, 'color');
+        }
+        
+        .app-border {
+            border-color: map-get($map, 'color');
+        }
+        
+        // Button styles
+        .btn-app {
+            background: map-get($map, 'color');
+            color: white;
+            border-bottom: 4px solid map-get($map, 'dark');
+            
+            &:hover {
+                background: map-get($map, 'dark');
+            }
+            
+            &:active {
+                transform: translateY(2px);
+                border-bottom-width: 2px;
+            }
+        }
+        
+        // Link styles
+        .app-link {
+            color: map-get($map, 'color');
+            
+            &:hover {
+                color: map-get($map, 'dark');
+            }
+        }
+        
+        // Card styles
+        .app-card {
+            border: 2px solid map-get($map, 'color');
+            
+            .card-header {
+                background: map-get($map, 'light');
+            }
+        }
+        
+        // Progress bar
+        .app-progress {
+            background: map-get($map, 'light');
+            
+            .progress-fill {
+                background: map-get($map, 'color');
+            }
+        }
+        
+        // Badge
+        .app-badge {
+            background: map-get($map, 'color');
+            color: white;
+            font-size: $font-size-xs;
+            padding: 2px 8px;
+            border-radius: $radius-full;
+        }
+        
+        // Gradient text
+        .app-gradient-text {
+            background: linear-gradient(135deg, map-get($map, 'color'), map-get($map, 'dark'));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    }
+}
+
+// ===== THEME PER KATEGORI =====
+@each $category, $color in $categories {
+    .cat-#{$category} {
+        .cat-color {
+            color: $color;
+        }
+        
+        .cat-bg {
+            background: $color;
+        }
+        
+        .cat-border {
+            border-color: $color;
+        }
+        
+        .cat-badge {
+            background: rgba($color, 0.1);
+            color: $color;
+            border: 1px solid $color;
+        }
+    }
+}
+
+// ===== DARK MODE (future use) =====
+.dark-mode {
+    background: $bg-dark;
+    color: $text-light;
+    
+    .bottom-nav {
+        background: rgba($bg-dark, 0.95);
+        border-top-color: lighten($bg-dark, 10%);
+        
+        .nav-link {
+            color: lighten($text-muted, 20%);
+            
+            &.active {
+                color: $primary-green;
+            }
+        }
+    }
+    
+    .app-header {
+        background: $bg-dark;
+        border-bottom-color: lighten($bg-dark, 10%);
+        
+        .brand-tagline {
+            color: lighten($text-muted, 20%);
+        }
+    }
+    
+    .card {
+        background: lighten($bg-dark, 5%);
+        border-color: lighten($bg-dark, 10%);
+    }
+    
+    .text-muted {
+        color: lighten($text-muted, 20%) !important;
+    }
+}
+
+// ===== ANIMASI THEME =====
+@keyframes themePulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.theme-pulse {
+    animation: themePulse 2s infinite;
+}
+
+// ===== THEME TRANSITION =====
+.theme-transition {
+    transition: background-color $transition-normal,
+                color $transition-normal,
+                border-color $transition-normal;
+}

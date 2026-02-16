@@ -1,0 +1,41 @@
+---
+layout: file
+app: olympedia
+permalink: /olympedia/file/:id
+---
+
+<!-- Halaman viewer file akan menggunakan layout file.html -->
+<!-- Parameter :id akan diambil dari URL dan diproses oleh JavaScript -->
+<script>
+// Get file ID from URL
+document.addEventListener('DOMContentLoaded', () => {
+    const path = window.location.pathname;
+    const fileId = path.split('/').pop();
+    
+    // Load data and find file
+    if (window.OLYMPEDIA) {
+        const file = OLYMPEDIA.data.find(f => f.id === fileId);
+        if (file) {
+            document.getElementById('viewer-title').textContent = file.title;
+            document.getElementById('viewer-current').value = file.current || 0;
+            document.getElementById('viewer-total').value = file.total || 1;
+            document.getElementById('viewer-category').textContent = file.cat;
+            
+            let driveUrl = file.url;
+            if (!driveUrl.includes('http')) {
+                driveUrl = `https://drive.google.com/file/d/${file.url}/preview`;
+            }
+            document.getElementById('viewer-frame').src = driveUrl;
+            document.getElementById('current-file-id').value = fileId;
+            
+            // Set current viewing ID
+            OLYMPEDIA.currentViewingId = fileId;
+        } else {
+            WOIPS.toast('File tidak ditemukan', 'error');
+            setTimeout(() => {
+                window.location.href = '/olympedia/';
+            }, 2000);
+        }
+    }
+});
+</script>

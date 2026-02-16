@@ -1,0 +1,163 @@
+// _variables.scss - Semua variabel global untuk WOIPS
+// Author: Studekasa
+
+// ===== WARNA GLOBAL =====
+// Primary Colors
+$primary-green: #58CC02;
+$primary-green-dark: #46A302;
+$primary-green-light: #E8F9E8;
+
+$primary-blue: #1CB0F6;
+$primary-blue-dark: #1899D6;
+$primary-blue-light: #E8F2FF;
+
+$primary-yellow: #FFC800;
+$primary-yellow-dark: #E5A400;
+$primary-yellow-light: #FFF9E6;
+
+$primary-red: #FF4B4B;
+$primary-red-dark: #C43C3C;
+$primary-red-light: #FFE8E8;
+
+$primary-purple: #CE82FF;
+$primary-purple-dark: #AF66E3;
+$primary-purple-light: #F3E8FF;
+
+// ===== WARNA APLIKASI =====
+$app-olympedia: $primary-green;
+$app-olympedia-dark: $primary-green-dark;
+$app-olympedia-light: $primary-green-light;
+
+$app-olymap: $primary-blue;
+$app-olymap-dark: $primary-blue-dark;
+$app-olymap-light: $primary-blue-light;
+
+$app-olymnote: $primary-purple;
+$app-olymnote-dark: $primary-purple-dark;
+$app-olymnote-light: $primary-purple-light;
+
+// ===== WARNA TEKS =====
+$text-dark: #3C3C3C;
+$text-muted: #838383;
+$text-light: #FFFFFF;
+$text-disabled: #CCCCCC;
+
+// ===== WARNA UI =====
+$bg-body: #FFFFFF;
+$bg-light: #F7F7F7;
+$bg-dark: #2C3E50;
+$border-color: #E5E5E5;
+$shadow-color: rgba(0, 0, 0, 0.05);
+$overlay-color: rgba(0, 0, 0, 0.5);
+
+// ===== SPACING =====
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 20px;
+$spacing-xxl: 24px;
+$spacing-xxxl: 32px;
+
+// Container max widths
+$container-sm: 540px;
+$container-md: 720px;
+$container-lg: 960px;
+$container-xl: 1140px;
+
+// ===== BORDER RADIUS =====
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+$radius-xxl: 24px;
+$radius-full: 999px;
+
+// ===== TYPOGRAPHY =====
+$font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+$font-size-xs: 10px;
+$font-size-sm: 11px;
+$font-size-md: 13px;
+$font-size-lg: 16px;
+$font-size-xl: 20px;
+$font-size-xxl: 24px;
+
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-loose: 1.8;
+
+// ===== TRANSITIONS =====
+$transition-fast: 0.1s ease;
+$transition-normal: 0.2s ease;
+$transition-slow: 0.3s ease;
+
+// ===== Z-INDEX =====
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070;
+$z-index-toast: 1080;
+$z-index-bottom-nav: 1100;
+
+// ===== BREAKPOINTS =====
+$breakpoint-xs: 0;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+// ===== SHADOWS =====
+$shadow-sm: 0 2px 4px $shadow-color;
+$shadow-md: 0 4px 8px $shadow-color;
+$shadow-lg: 0 8px 16px $shadow-color;
+$shadow-xl: 0 12px 24px $shadow-color;
+
+// ===== GRADIENTS =====
+$gradient-green: linear-gradient(135deg, $primary-green, $primary-green-dark);
+$gradient-blue: linear-gradient(135deg, $primary-blue, $primary-blue-dark);
+$gradient-purple: linear-gradient(135deg, $primary-purple, $primary-purple-dark);
+$gradient-yellow: linear-gradient(135deg, $primary-yellow, $primary-yellow-dark);
+
+// ===== ANIMATIONS =====
+$animation-duration: 0.3s;
+$animation-timing: ease-in-out;
+
+// ===== MAPS UNTUK LOOPING =====
+$apps: (
+    'olympedia': (
+        'color': $app-olympedia,
+        'dark': $app-olympedia-dark,
+        'light': $app-olympedia-light,
+        'icon': 'bi-collection-play-fill'
+    ),
+    'olymap': (
+        'color': $app-olymap,
+        'dark': $app-olymap-dark,
+        'light': $app-olymap-light,
+        'icon': 'bi-map-fill'
+    ),
+    'olymnote': (
+        'color': $app-olymnote,
+        'dark': $app-olymnote-dark,
+        'light': $app-olymnote-light,
+        'icon': 'bi-layers-fill'
+    )
+);
+
+$categories: (
+    'geografi': $primary-green,
+    'ekonomi': $primary-blue,
+    'sejarah': $primary-yellow,
+    'sosiologi': $primary-purple,
+    'soal': $primary-red
+);

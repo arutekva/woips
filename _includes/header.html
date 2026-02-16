@@ -1,0 +1,105 @@
+<!-- header.html - Header Global WOIPS -->
+{% assign app = page.app | default: "home" %}
+{% assign app_config = site.data.navigation.apps[app] %}
+
+<header class="app-header">
+    <div class="brand">
+        <!-- Logo akan ditampilkan jika ada -->
+        <img src="/assets/images/logo-woips.png" 
+             alt="WOIPS Logo" 
+             class="d-none d-md-block"
+             onerror="this.style.display='none'"
+             style="width: 36px; height: 36px;">
+        
+        <div class="brand-text">
+            {% if app == "home" %}
+            <span class="brand-name">WOIPS</span>
+            <span class="brand-tagline">Wahana Olimpiade IPS</span>
+            {% else %}
+            <span class="brand-name {{ app }}" style="color: {{ app_config.color }}">
+                {{ app_config.name }}
+            </span>
+            <span class="brand-tagline">{{ app_config.tagline }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+        <!-- Search Button (hanya untuk apps) -->
+        {% if app != "home" %}
+        <button class="btn p-0 border-0 me-2" 
+                onclick="toggleSearch()"
+                aria-label="Pencarian"
+                id="searchToggleBtn"
+                style="width: 40px; height: 40px; border: 2px solid var(--border-color); border-radius: 12px;">
+            <i class="bi bi-search text-muted"></i>
+        </button>
+        {% endif %}
+
+        <!-- Settings Button -->
+        <button class="btn p-0 border-0" 
+                onclick="openSettingsModal()"
+                aria-label="Pengaturan"
+                data-bs-toggle="modal"
+                data-bs-target="#settingsModal">
+            <div style="width: 40px; height: 40px; border: 2px solid var(--border-color); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-grid-fill text-muted"></i>
+            </div>
+        </button>
+    </div>
+</header>
+
+<!-- Search Bar (hidden by default) -->
+{% if app != "home" %}
+<div id="globalSearchBar" class="container px-3 py-2" style="display: none; background: white; border-bottom: 2px solid var(--border-color);">
+    <div class="search-container" style="background: var(--bg-light); border-radius: var(--radius-md); padding: 8px 12px; display: flex; align-items: center; gap: 8px;">
+        <i class="bi bi-search text-muted"></i>
+        <input type="text" 
+               id="globalSearchInput" 
+               class="border-0 bg-transparent w-100" 
+               placeholder="Cari di {{ app_config.name }}..." 
+               style="outline: none; font-weight: 600;">
+        <button class="btn p-0 border-0" onclick="hideSearch()">
+            <i class="bi bi-x-lg text-muted"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+function toggleSearch() {
+    const searchBar = document.getElementById('globalSearchBar');
+    const searchToggle = document.getElementById('searchToggleBtn');
+    
+    if (searchBar.style.display === 'none') {
+        searchBar.style.display = 'block';
+        searchToggle.innerHTML = '<i class="bi bi-x-lg text-muted"></i>';
+        document.getElementById('globalSearchInput').focus();
+    } else {
+        hideSearch();
+    }
+}
+
+function hideSearch() {
+    const searchBar = document.getElementById('globalSearchBar');
+    const searchToggle = document.getElementById('searchToggleBtn');
+    
+    searchBar.style.display = 'none';
+    searchToggle.innerHTML = '<i class="bi bi-search text-muted"></i>';
+    
+    // Trigger search clear di masing-masing app
+    if (window.OLYMPEDIA) {
+        document.getElementById('olympedia-search').value = '';
+        OLYMPEDIA.searchQuery = '';
+        OLYMPEDIA.render();
+    }
+    if (window.OLYMAP) {
+        // OLYMAP search logic
+    }
+    if (window.OLYMNOTE) {
+        document.getElementById('olymnote-search').value = '';
+        OLYMNOTE.query = '';
+        OLYMNOTE.render();
+    }
+}
+</script>
+{% endif %}

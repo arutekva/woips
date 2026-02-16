@@ -1,0 +1,242 @@
+---
+layout: app
+app: olymap
+title: OLYMAP - Roadmap Belajar OSN IPS
+description: Atur target belajar OSN IPS dengan roadmap interaktif. Pin prioritas dan track progress.
+---
+
+<!-- OLYMAP Main Content -->
+<div class="olymap-content">
+    <!-- Roadmap List Container -->
+    <div id="olymap-list" class="px-3">
+        <!-- Akan diisi oleh JavaScript -->
+    </div>
+
+    <!-- Floating Action Button untuk tambah roadmap -->
+    <div class="fab-container" style="position: fixed; bottom: 100px; right: 20px; z-index: 100;">
+        <button class="btn-3d secondary rounded-circle" 
+                onclick="OLYMAP.openEditor()"
+                style="width: 56px; height: 56px; border-radius: 50%; padding: 0; background: var(--primary-blue); border-bottom-color: var(--primary-blue-dark);">
+            <i class="bi bi-plus-lg fs-4"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Editor Modal -->
+<div class="modal fade" id="olymapEditorModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered mx-3">
+        <div class="modal-content border-0 rounded-4">
+            <div class="modal-body p-4">
+                <h5 class="fw-800 mb-4" id="olymapEditorTitle">TAMBAH ROADMAP</h5>
+                
+                <form id="olymapForm" onsubmit="event.preventDefault(); OLYMAP.saveRoadmap();">
+                    <input type="hidden" id="olymapFormId" value="">
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">JUDUL ROADMAP</label>
+                        <input type="text" id="olymapFormTitle" class="form-control" required 
+                               placeholder="Contoh: 🌍 Geologi Dasar">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">TAG / KATEGORI</label>
+                        <input type="text" id="olymapFormTag" class="form-control" value="#litosfer" 
+                               placeholder="#geologi #tektonik">
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-700 small text-muted">KATEGORI</label>
+                            <select id="olymapFormCategory" class="form-select">
+                                <option value="geo">Geografi</option>
+                                <option value="eco">Ekonomi</option>
+                                <option value="his">Sejarah</option>
+                                <option value="soc">Sosiologi</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-700 small text-muted">DEADLINE</label>
+                            <input type="date" id="olymapFormDate" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">CATATAN BELAJAR</label>
+                        <textarea id="olymapFormNote" class="form-control" rows="3" 
+                                  placeholder="Detail materi yang perlu dipelajari..."></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">LINK MATERI (opsional)</label>
+                        <input type="url" id="olymapFormLink" class="form-control" 
+                               placeholder="https://...">
+                    </div>
+                    
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="olymapFormPin">
+                        <label class="form-check-label small fw-bold" for="olymapFormPin">
+                            Pin di urutan teratas (prioritas)
+                        </label>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn-3d flex-grow-1" style="--bg: #BBB; --shadow: #888;" data-bs-dismiss="modal">
+                            BATAL
+                        </button>
+                        <button type="submit" class="btn-3d secondary flex-grow-1">
+                            SIMPAN
+                        </button>
+                    </div>
+                    
+                    <div id="olymapFormDelete" class="mt-3 text-center" style="display: none;">
+                        <button type="button" class="btn btn-link text-danger fw-bold small p-0" 
+                                onclick="OLYMAP.deleteCurrent()">
+                            Hapus Roadmap Ini
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="olymapDetailModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered mx-3">
+        <div class="modal-content border-0 rounded-4">
+            <div class="modal-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge bg-primary" id="detailTag">#materi</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                
+                <h4 class="fw-800 mb-2" id="detailTitle">Judul Roadmap</h4>
+                <div class="small text-danger fw-bold mb-3" id="detailDeadline"></div>
+                
+                <div class="bg-light p-3 rounded-3 mb-3" id="detailNote">
+                    Catatan belajar...
+                </div>
+                
+                <div id="detailLink" class="mb-3"></div>
+                
+                <div class="d-flex gap-2">
+                    <button class="btn btn-light border-2 fw-bold flex-grow-1" id="detailEditBtn">EDIT</button>
+                    <button class="btn-3d secondary flex-grow-1" data-bs-dismiss="modal">TUTUP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Extend OLYMAP functions
+OLYMAP.openEditor = function(tab = null, id = null) {
+    if (id) {
+        // Edit mode
+        const item = this.data[tab || this.currentTab].find(i => i.id === id);
+        if (!item) return;
+        
+        document.getElementById('olymapEditorTitle').textContent = 'EDIT ROADMAP';
+        document.getElementById('olymapFormId').value = id;
+        document.getElementById('olymapFormTitle').value = item.title;
+        document.getElementById('olymapFormTag').value = item.tag;
+        document.getElementById('olymapFormCategory').value = tab || this.currentTab;
+        document.getElementById('olymapFormDate').value = item.date;
+        document.getElementById('olymapFormNote').value = item.note;
+        document.getElementById('olymapFormLink').value = item.link || '';
+        document.getElementById('olymapFormPin').checked = item.pin || false;
+        document.getElementById('olymapFormDelete').style.display = 'block';
+        
+        // Store current edit info
+        this.editContext = { tab: tab || this.currentTab, id: id };
+    } else {
+        // Add mode
+        document.getElementById('olymapEditorTitle').textContent = 'TAMBAH ROADMAP';
+        document.getElementById('olymapFormId').value = '';
+        document.getElementById('olymapFormTitle').value = '';
+        document.getElementById('olymapFormTag').value = '#materi';
+        document.getElementById('olymapFormCategory').value = this.currentTab;
+        document.getElementById('olymapFormDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('olymapFormNote').value = '';
+        document.getElementById('olymapFormLink').value = '';
+        document.getElementById('olymapFormPin').checked = false;
+        document.getElementById('olymapFormDelete').style.display = 'none';
+        this.editContext = null;
+    }
+    
+    new bootstrap.Modal(document.getElementById('olymapEditorModal')).show();
+};
+
+OLYMAP.saveRoadmap = function() {
+    const formData = {
+        id: this.editContext?.id || Date.now(),
+        title: document.getElementById('olymapFormTitle').value,
+        tag: document.getElementById('olymapFormTag').value,
+        date: document.getElementById('olymapFormDate').value,
+        note: document.getElementById('olymapFormNote').value,
+        link: document.getElementById('olymapFormLink').value,
+        pin: document.getElementById('olymapFormPin').checked,
+        done: this.editContext ? 
+            (this.data[this.editContext.tab].find(i => i.id === this.editContext.id)?.done || false) : 
+            false
+    };
+    
+    const category = document.getElementById('olymapFormCategory').value;
+    
+    if (this.editContext) {
+        // Update existing
+        const idx = this.data[this.editContext.tab].findIndex(i => i.id === this.editContext.id);
+        this.data[this.editContext.tab][idx] = formData;
+    } else {
+        // Add new
+        if (!this.data[category]) this.data[category] = [];
+        this.data[category].push(formData);
+    }
+    
+    this.saveData();
+    this.render();
+    
+    bootstrap.Modal.getInstance(document.getElementById('olymapEditorModal')).hide();
+    WOIPS.toast('Roadmap berhasil disimpan!', 'success');
+};
+
+OLYMAP.deleteCurrent = function() {
+    if (!this.editContext) return;
+    
+    WOIPS.confirm('Hapus Roadmap?', 'Data akan dihapus permanen.', () => {
+        const { tab, id } = this.editContext;
+        this.data[tab] = this.data[tab].filter(i => i.id !== id);
+        this.saveData();
+        this.render();
+        
+        bootstrap.Modal.getInstance(document.getElementById('olymapEditorModal')).hide();
+        WOIPS.toast('Roadmap dihapus', 'success');
+    });
+};
+
+OLYMAP.viewDetail = function(tab, id) {
+    const item = this.data[tab].find(i => i.id === id);
+    if (!item) return;
+    
+    document.getElementById('detailTag').textContent = item.tag;
+    document.getElementById('detailTitle').textContent = item.title;
+    document.getElementById('detailDeadline').textContent = `Target: ${WOIPS.formatDate(item.date)}`;
+    document.getElementById('detailNote').textContent = item.note || 'Tidak ada catatan.';
+    
+    const linkDiv = document.getElementById('detailLink');
+    linkDiv.innerHTML = item.link ? 
+        `<a href="${item.link}" target="_blank" class="btn btn-primary w-100 fw-bold">BUKA MATERI</a>` : '';
+    
+    document.getElementById('detailEditBtn').onclick = () => {
+        bootstrap.Modal.getInstance(document.getElementById('olymapDetailModal')).hide();
+        this.openEditor(tab, id);
+    };
+    
+    new bootstrap.Modal(document.getElementById('olymapDetailModal')).show();
+};
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    OLYMAP.init();
+});
+      </script>

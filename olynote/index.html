@@ -1,0 +1,199 @@
+---
+layout: app
+app: olymnote
+title: OLYMNOTE - Glosarium Istilah OSN IPS
+description: Kumpulan istilah sulit OSN IPS lengkap dengan penjelasan. Filter, search, dan bookmark.
+---
+
+<!-- OLYMNOTE Main Content -->
+<div class="olymnote-content">
+    <!-- Grid Container -->
+    <div id="olymnote-grid" class="olymnote-grid px-3">
+        <!-- Akan diisi oleh JavaScript -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="olymnote-empty" style="display: none;" class="text-center py-5">
+        <i class="bi bi-search fs-1 text-muted"></i>
+        <p class="mt-2 text-muted">Tidak ada istilah ditemukan</p>
+    </div>
+
+    <!-- Floating Action Button untuk tambah istilah -->
+    <div class="fab-container" style="position: fixed; bottom: 100px; right: 20px; z-index: 100;">
+        <button class="btn-3d purple rounded-circle" 
+                onclick="OLYMNOTE.openForm()"
+                style="width: 56px; height: 56px; border-radius: 50%; padding: 0; background: var(--primary-purple); border-bottom-color: var(--primary-purple-dark);">
+            <i class="bi bi-plus-lg fs-4"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Form Modal -->
+<div class="modal fade" id="olymnoteFormModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered mx-3">
+        <div class="modal-content border-0 rounded-4">
+            <div class="modal-body p-4">
+                <h5 class="fw-800 mb-4" id="olymnoteFormTitle">TAMBAH ISTILAH</h5>
+                
+                <form id="olymnoteForm" onsubmit="event.preventDefault(); OLYMNOTE.saveForm();">
+                    <input type="hidden" id="olymnoteFormId" value="">
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-3">
+                            <label class="form-label fw-700 small text-muted">EMOJI</label>
+                            <input type="text" id="olymnoteFormEmoji" class="form-control text-center" value="📗">
+                        </div>
+                        <div class="col-9">
+                            <label class="form-label fw-700 small text-muted">ISTILAH</label>
+                            <input type="text" id="olymnoteFormTitle" class="form-control" required 
+                                   placeholder="Contoh: Atmosfer">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">SUB JUDUL</label>
+                        <input type="text" id="olymnoteFormSubtitle" class="form-control" 
+                               placeholder="Lapisan udara bumi">
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-700 small text-muted">KATEGORI UTAMA</label>
+                            <select id="olymnoteFormPrimaryTag" class="form-select">
+                                <option>GEOGRAFI</option>
+                                <option>SOSIOLOGI</option>
+                                <option>EKONOMI</option>
+                                <option>SEJARAH</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-700 small text-muted">SUB TAG</label>
+                            <input type="text" id="olymnoteFormSubTag" class="form-control" value="ILMU BUMI">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">PENJELASAN</label>
+                        <textarea id="olymnoteFormContent" class="form-control" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">INFO TAMBAHAN (opsional)</label>
+                        <textarea id="olymnoteFormExtra" class="form-control" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-700 small text-muted">URL GAMBAR (opsional)</label>
+                        <input type="url" id="olymnoteFormImg" class="form-control" 
+                               placeholder="https://...">
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn-3d flex-grow-1" style="--bg: #BBB; --shadow: #888;" data-bs-dismiss="modal">
+                            BATAL
+                        </button>
+                        <button type="submit" class="btn-3d purple flex-grow-1">
+                            SIMPAN
+                        </button>
+                    </div>
+                    
+                    <div id="olymnoteFormDelete" class="mt-3 text-center" style="display: none;">
+                        <button type="button" class="btn btn-link text-danger fw-bold small p-0" 
+                                onclick="OLYMNOTE.deleteCurrent()">
+                            Hapus Istilah Ini
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Extend OLYMNOTE functions
+OLYMNOTE.openForm = function(id = null) {
+    if (id) {
+        // Edit mode
+        const item = this.data.find(x => x.id === id);
+        if (!item) return;
+        
+        document.getElementById('olymnoteFormTitle').textContent = 'EDIT ISTILAH';
+        document.getElementById('olymnoteFormId').value = id;
+        document.getElementById('olymnoteFormEmoji').value = item.emoji || '📗';
+        document.getElementById('olymnoteFormTitle').value = item.title;
+        document.getElementById('olymnoteFormSubtitle').value = item.subtitle || '';
+        document.getElementById('olymnoteFormPrimaryTag').value = item.primaryTag;
+        document.getElementById('olymnoteFormSubTag').value = item.subTag || '';
+        document.getElementById('olymnoteFormContent').value = item.content;
+        document.getElementById('olymnoteFormExtra').value = item.extra || '';
+        document.getElementById('olymnoteFormImg').value = item.img || '';
+        document.getElementById('olymnoteFormDelete').style.display = 'block';
+        
+        this.editId = id;
+    } else {
+        // Add mode
+        document.getElementById('olymnoteFormTitle').textContent = 'TAMBAH ISTILAH';
+        document.getElementById('olymnoteFormId').value = '';
+        document.getElementById('olymnoteFormEmoji').value = '📗';
+        document.getElementById('olymnoteFormTitle').value = '';
+        document.getElementById('olymnoteFormSubtitle').value = '';
+        document.getElementById('olymnoteFormPrimaryTag').value = 'GEOGRAFI';
+        document.getElementById('olymnoteFormSubTag').value = '';
+        document.getElementById('olymnoteFormContent').value = '';
+        document.getElementById('olymnoteFormExtra').value = '';
+        document.getElementById('olymnoteFormImg').value = '';
+        document.getElementById('olymnoteFormDelete').style.display = 'none';
+        
+        this.editId = null;
+    }
+    
+    new bootstrap.Modal(document.getElementById('olymnoteFormModal')).show();
+};
+
+OLYMNOTE.saveForm = function() {
+    const formData = {
+        id: this.editId || Date.now(),
+        emoji: document.getElementById('olymnoteFormEmoji').value || '📗',
+        title: document.getElementById('olymnoteFormTitle').value,
+        subtitle: document.getElementById('olymnoteFormSubtitle').value,
+        primaryTag: document.getElementById('olymnoteFormPrimaryTag').value,
+        subTag: document.getElementById('olymnoteFormSubTag').value,
+        content: document.getElementById('olymnoteFormContent').value,
+        extra: document.getElementById('olymnoteFormExtra').value,
+        img: document.getElementById('olymnoteFormImg').value,
+        pinned: this.editId ? (this.data.find(x => x.id === this.editId)?.pinned || false) : false
+    };
+    
+    if (this.editId) {
+        // Update existing
+        this.data = this.data.map(x => x.id === this.editId ? formData : x);
+    } else {
+        // Add new
+        this.data.push(formData);
+    }
+    
+    this.saveData();
+    this.render();
+    
+    bootstrap.Modal.getInstance(document.getElementById('olymnoteFormModal')).hide();
+    WOIPS.toast('Istilah berhasil disimpan!', 'success');
+};
+
+OLYMNOTE.deleteCurrent = function() {
+    if (!this.editId) return;
+    
+    WOIPS.confirm('Hapus Istilah?', 'Data akan dihapus permanen.', () => {
+        this.data = this.data.filter(x => x.id !== this.editId);
+        this.saveData();
+        this.render();
+        
+        bootstrap.Modal.getInstance(document.getElementById('olymnoteFormModal')).hide();
+        WOIPS.toast('Istilah dihapus', 'success');
+    });
+};
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    OLYMNOTE.init();
+});
+                                </script>

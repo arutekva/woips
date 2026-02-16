@@ -1,0 +1,44 @@
+<!-- olymap-header.html - Header spesifik untuk OLYMAP -->
+{% assign app = site.data.navigation.apps.olymap %}
+
+<div class="olymap-header">
+    <!-- Tab Slider -->
+    <div class="olymap-tab-slider" id="olymapTabs">
+        {% for tab in app.tabs %}
+        <a href="javascript:void(0)" 
+           class="olymap-tab-item {{ tab.slug }} {% if forloop.first %}active{% endif %}"
+           data-tab="{{ tab.slug }}"
+           onclick="OLYMAP.changeTab('{{ tab.slug }}')">
+            {{ tab.icon }} {{ tab.name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Stats Panel -->
+    <div class="olymap-stats-panel mx-3 my-2" id="olymap-stats">
+        <!-- Will be filled by JavaScript -->
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="d-flex justify-content-end px-3 mb-2">
+        <button class="btn btn-sm fw-800" 
+                onclick="OLYMAP.openEditor()"
+                style="background: var(--primary-blue); color: white; border-radius: 10px;">
+            <i class="bi bi-plus-lg me-1"></i> TAMBAH ROADMAP
+        </button>
+    </div>
+</div>
+
+<script>
+// Initialize active tab
+document.addEventListener('DOMContentLoaded', () => {
+    const currentTab = OLYMAP?.currentTab || 'geo';
+    document.querySelectorAll('.olymap-tab-item').forEach(el => {
+        if (el.dataset.tab === currentTab) {
+            el.classList.add('active');
+        } else {
+            el.classList.remove('active');
+        }
+    });
+});
+</script>

@@ -1,0 +1,202 @@
+/* ===== OLYMNOTE.CSS - SPESIFIK UNTUK GLOSARIUM ===== */
+
+.olymnote-search-wrapper {
+    position: relative;
+    margin-bottom: var(--spacing-md);
+}
+
+.olymnote-search-input {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 40px;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--border-color);
+    font-family: inherit;
+    font-size: var(--font-size-md);
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+.olymnote-search-input:focus {
+    border-color: var(--primary-purple);
+}
+
+.olymnote-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.olymnote-filter-accordion {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-lg);
+    overflow: hidden;
+}
+
+.olymnote-filter-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+    background: var(--bg-light);
+}
+
+.olymnote-filter-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition-slow);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+    background: #fafafa;
+}
+
+.olymnote-filter-content.open {
+    max-height: 200px;
+    padding: var(--spacing-md);
+}
+
+.olymnote-tag-pill {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    cursor: pointer;
+    border: 2px solid var(--border-color);
+    background: white;
+    transition: var(--transition-fast);
+}
+
+.olymnote-tag-pill.active {
+    background: var(--primary-purple);
+    color: white;
+    border-color: var(--primary-purple-shadow);
+}
+
+.olymnote-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+}
+
+@media (min-width: 600px) {
+    .olymnote-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.olymnote-card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-bottom-width: 5px;
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-md);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.olymnote-card:hover {
+    transform: translateY(-2px);
+}
+
+.olymnote-card[data-category="GEOGRAFI"] {
+    border-color: var(--primary-green);
+    border-bottom-color: var(--primary-green-shadow);
+}
+
+.olymnote-card[data-category="SOSIOLOGI"] {
+    border-color: var(--primary-purple);
+    border-bottom-color: var(--primary-purple-shadow);
+}
+
+.olymnote-card[data-category="SEJARAH"] {
+    border-color: var(--primary-yellow);
+    border-bottom-color: var(--primary-yellow-shadow);
+}
+
+.olymnote-card[data-category="EKONOMI"] {
+    border-color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue-shadow);
+}
+
+.olymnote-card-header {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.olymnote-emoji-box {
+    font-size: 24px;
+    background: var(--bg-light);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+}
+
+.olymnote-card-titles h3 {
+    margin: 0;
+    font-size: var(--font-size-md);
+    font-weight: 800;
+}
+
+.olymnote-card-titles p {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.olymnote-badge-row {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+.olymnote-badge {
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    background: #eee;
+}
+
+.olymnote-card-actions {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.olymnote-mini-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.olymnote-mini-btn.active-pin {
+    color: var(--primary-yellow);
+    border-color: var(--primary-yellow);
+}

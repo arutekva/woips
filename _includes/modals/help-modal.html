@@ -1,0 +1,184 @@
+<!-- help-modal.html - Modal Panduan dan Bantuan -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg mx-3">
+        <div class="modal-content border-0" style="border-radius: 24px;">
+            <div class="modal-body p-4">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-800 m-0">
+                        <i class="bi bi-question-circle-fill me-2" style="color: var(--primary-purple);"></i>
+                        PANDUAN WOIPS
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+
+                <!-- Tabs Navigation -->
+                <ul class="nav nav-pills mb-4" id="helpTabs" role="tablist" style="gap: 8px;">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">
+                            <i class="bi bi-info-circle me-1"></i> Umum
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="olympedia-tab" data-bs-toggle="tab" data-bs-target="#olympedia" type="button" role="tab">
+                            <span style="color: #58CC02;">📚</span> Olympedia
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="olymap-tab" data-bs-toggle="tab" data-bs-target="#olymap" type="button" role="tab">
+                            <span style="color: #1CB0F6;">🗺️</span> OLYMAP
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="olymnote-tab" data-bs-toggle="tab" data-bs-target="#olymnote" type="button" role="tab">
+                            <span style="color: #CE82FF;">📝</span> OLYMNOTE
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tabs Content -->
+                <div class="tab-content" id="helpTabsContent">
+                    <!-- General Tab -->
+                    <div class="tab-pane fade show active" id="general" role="tabpanel">
+                        <div class="p-3" style="background: #FFF9E6; border-radius: 16px; border: 1px solid #FFE48E;">
+                            <h6 class="fw-800 mb-3">🌟 Selamat Datang di WOIPS!</h6>
+                            <p class="small mb-3">WOIPS adalah platform terintegrasi dengan 3 aplikasi dalam 1 untuk membantu persiapan OSN IPS kamu.</p>
+                            
+                            <div class="d-flex gap-3 mb-3">
+                                <div class="text-center">
+                                    <div class="bg-white rounded-3 p-2 mb-1" style="width: 60px;">
+                                        <i class="bi bi-collection-play-fill" style="color: #58CC02; font-size: 24px;"></i>
+                                    </div>
+                                    <small class="fw-bold">OLYMPEDIA</small>
+                                </div>
+                                <div class="text-center">
+                                    <div class="bg-white rounded-3 p-2 mb-1" style="width: 60px;">
+                                        <i class="bi bi-map-fill" style="color: #1CB0F6; font-size: 24px;"></i>
+                                    </div>
+                                    <small class="fw-bold">OLYMAP</small>
+                                </div>
+                                <div class="text-center">
+                                    <div class="bg-white rounded-3 p-2 mb-1" style="width: 60px;">
+                                        <i class="bi bi-layers-fill" style="color: #CE82FF; font-size: 24px;"></i>
+                                    </div>
+                                    <small class="fw-bold">OLYMNOTE</small>
+                                </div>
+                            </div>
+
+                            <p class="small mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Semua data disimpan di localStorage browser kamu (privat)</p>
+                            <p class="small mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Bisa digunakan offline setelah pertama kali buka (PWA)</p>
+                            <p class="small mb-0"><i class="bi bi-check-circle-fill text-success me-2"></i> Gratis selamanya untuk pejuang OSN IPS</p>
+                        </div>
+                    </div>
+
+                    <!-- Olympedia Tab -->
+                    <div class="tab-pane fade" id="olympedia" role="tabpanel">
+                        <div class="p-3" style="background: #E8F9E8; border-radius: 16px; border: 1px solid #58CC02;">
+                            <h6 class="fw-800 mb-3" style="color: #58CC02;">📚 OLYMPEDIA - Gudang Materi</h6>
+                            
+                            <div class="mb-3">
+                                <p class="small fw-bold mb-2">✨ Fitur:</p>
+                                <ul class="small" style="list-style-type: none; padding-left: 0;">
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #58CC02;"></i> Preview Google Drive langsung di aplikasi</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #58CC02;"></i> Bookmark materi favorit</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #58CC02;"></i> Tracking progress baca (halaman terakhir)</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #58CC02;"></i> Filter per kategori (Geografi, Ekonomi, dll)</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #58CC02;"></i> Pencarian materi</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <p class="small fw-bold mb-2">📖 Cara Penggunaan:</p>
+                                <ol class="small">
+                                    <li class="mb-1">Klik materi yang ingin dibaca</li>
+                                    <li class="mb-1">Viewer Google Drive akan terbuka</li>
+                                    <li class="mb-1">Isi halaman terakhir yang dibaca</li>
+                                    <li class="mb-1">Klik SIMPAN untuk menyimpan progress</li>
+                                    <li class="mb-1">Klik icon bookmark untuk menyimpan ke favorit</li>
+                                </ol>
+                            </div>
+
+                            <div class="small text-muted fst-italic">
+                                <i class="bi bi-info-circle me-1"></i> Materi diambil dari sumber publik untuk pendidikan.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OLYMAP Tab -->
+                    <div class="tab-pane fade" id="olymap" role="tabpanel">
+                        <div class="p-3" style="background: #E8F2FF; border-radius: 16px; border: 1px solid #1CB0F6;">
+                            <h6 class="fw-800 mb-3" style="color: #1CB0F6;">🗺️ OLYMAP - Roadmap Belajar</h6>
+                            
+                            <div class="mb-3">
+                                <p class="small fw-bold mb-2">✨ Fitur:</p>
+                                <ul class="small" style="list-style-type: none; padding-left: 0;">
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #1CB0F6;"></i> To-do list interaktif per topik</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #1CB0F6;"></i> Pin prioritas (tetap di atas)</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #1CB0F6;"></i> Tracking progress per kategori</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #1CB0F6;"></i> Target deadline belajar</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #1CB0F6;"></i> Animasi confetti saat selesai</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <p class="small fw-bold mb-2">📖 Cara Penggunaan:</p>
+                                <ol class="small">
+                                    <li class="mb-1">Pilih tab kategori (Geo/Eco/His/Soc)</li>
+                                    <li class="mb-1">Klik [+] untuk tambah roadmap baru</li>
+                                    <li class="mb-1">Centang kotak jika materi sudah dipahami</li>
+                                    <li class="mb-1">Klik card untuk lihat detail materi</li>
+                                    <li class="mb-1">Pin materi prioritas agar selalu di atas</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OLYMNOTE Tab -->
+                    <div class="tab-pane fade" id="olymnote" role="tabpanel">
+                        <div class="p-3" style="background: #F3E8FF; border-radius: 16px; border: 1px solid #CE82FF;">
+                            <h6 class="fw-800 mb-3" style="color: #CE82FF;">📝 OLYMNOTE - Glosarium Istilah</h6>
+                            
+                            <div class="mb-3">
+                                <p class="small fw-bold mb-2">✨ Fitur:</p>
+                                <ul class="small" style="list-style-type: none; padding-left: 0;">
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #CE82FF;"></i> 200+ istilah OSN IPS + penjelasan</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #CE82FF;"></i> Filter per kategori</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #CE82FF;"></i> Pencarian cepat</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #CE82FF;"></i> Copy teks ke clipboard</li>
+                                    <li class="mb-2"><i class="bi bi-chevron-right me-2" style="color: #CE82FF;"></i> Bookmark istilah penting</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <p class="small fw-bold mb-2">📖 Cara Penggunaan:</p>
+                                <ol class="small">
+                                    <li class="mb-1">Gunakan search untuk mencari istilah</li>
+                                    <li class="mb-1">Klik filter untuk memfilter kategori</li>
+                                    <li class="mb-1">Klik card untuk lihat detail lengkap</li>
+                                    <li class="mb-1">Klik icon bookmark untuk menyimpan</li>
+                                    <li class="mb-1">Klik icon trash untuk menghapus</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Help Modal -->
+                <div class="text-center mt-4">
+                    <p class="small text-muted mb-3">
+                        Masih punya pertanyaan? Hubungi kami di Instagram <b>@studekasa</b>
+                    </p>
+                    <button class="btn btn-3d primary w-100" data-bs-dismiss="modal">
+                        <i class="bi bi-check-lg me-2"></i> MENGERTI
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openHelpModal() {
+    new bootstrap.Modal(document.getElementById('helpModal')).show();
+}
+          </script>

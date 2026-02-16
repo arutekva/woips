@@ -1,0 +1,88 @@
+{
+  "name": "WOIPS - Wahana Olimpiade IPS",
+  "short_name": "WOIPS",
+  "description": "Platform belajar OSN IPS terintegrasi: Gudang Materi, Roadmap, dan Glosarium",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#58CC02",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/assets/images/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "OLYMPEDIA - Gudang Materi",
+      "short_name": "Materi",
+      "description": "Akses materi OSN IPS",
+      "url": "/olympedia/",
+      "icons": [{ "src": "/assets/images/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "OLYMAP - Roadmap Belajar",
+      "short_name": "Roadmap",
+      "description": "Tracking progress belajar",
+      "url": "/olymap/",
+      "icons": [{ "src": "/assets/images/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "OLYMNOTE - Glosarium",
+      "short_name": "Glosarium",
+      "description": "Istilah-istilah OSN IPS",
+      "url": "/olymnote/",
+      "icons": [{ "src": "/assets/images/icon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": [],
+  "prefer_related_applications": false,
+  "related_applications": []
+}

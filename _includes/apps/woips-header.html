@@ -1,0 +1,45 @@
+<!-- woips-header.html - Header spesifik untuk OLYMPEDIA -->
+{% assign app = site.data.navigation.apps.olympedia %}
+
+<div class="olymedia-header">
+    <!-- Category Slider -->
+    <div class="olymedia-category-slider" id="olympediaCategories">
+        {% for category in app.categories %}
+        <div class="olymedia-category-item {% if forloop.first %}active{% endif %}" 
+             data-category="{{ category.name }}"
+             onclick="OLYMPEDIA.filterCategory('{{ category.name }}', this)">
+            {{ category.name }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Search Bar (specific for Olympedia) -->
+    <div class="olymedia-search mx-3 my-2">
+        <i class="bi bi-search text-muted"></i>
+        <input type="text" 
+               id="olympedia-search" 
+               placeholder="Cari materi OSN IPS..." 
+               class="border-0 bg-transparent w-100"
+               style="outline: none;">
+    </div>
+
+    <!-- Stats and Sync -->
+    <div class="d-flex justify-content-between align-items-center px-3 mb-2">
+        <span class="small fw-800 text-muted" id="olympedia-stats">MEMUAT...</span>
+        <span class="small fw-800" style="color: var(--primary-green); cursor: pointer;" onclick="OLYMPEDIA.render()">
+            <i class="bi bi-arrow-clockwise me-1"></i> RE-SYNC
+        </span>
+    </div>
+</div>
+
+<script>
+// Initialize category highlighting based on active filter
+document.addEventListener('DOMContentLoaded', () => {
+    const activeCategory = OLYMPEDIA?.activeFilter || 'Semua';
+    document.querySelectorAll('.olymedia-category-item').forEach(el => {
+        if (el.dataset.category === activeCategory) {
+            el.classList.add('active');
+        }
+    });
+});
+</script>

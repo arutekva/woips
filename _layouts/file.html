@@ -1,0 +1,120 @@
+---
+layout: default
+---
+
+<!-- file.html - Layout untuk viewer file Google Drive -->
+{% assign app = page.app | default: "olympedia" %}
+
+<div class="file-viewer-container" style="height: calc(100vh - 180px); position: relative;">
+    <!-- File Viewer Header -->
+    <div class="d-flex align-items-center gap-3 p-3 border-bottom" style="background: white;">
+        <button class="btn p-0" onclick="handleBackFromViewer()" aria-label="Kembali">
+            <i class="bi bi-arrow-left fs-4"></i>
+        </button>
+        <div class="flex-grow-1">
+            <h6 class="fw-800 mb-0 text-truncate" id="viewer-title">{{ page.file_title | default: "Memuat..." }}</h6>
+            <small class="text-muted" id="viewer-category"></small>
+        </div>
+        <button class="btn-3d primary px-3 py-1" style="width: auto;" onclick="saveViewerProgress()">
+            <i class="bi bi-check-lg me-1"></i> SIMPAN
+        </button>
+    </div>
+
+    <!-- Progress Input -->
+    <div class="d-flex bg-light p-2 justify-content-center gap-3 border-bottom small fw-bold">
+        <span>
+            Halaman: 
+            <input type="number" id="viewer-current" min="0" value="0" 
+                   style="width: 50px; border: 1px solid #ddd; border-radius: 6px; text-align: center; padding: 2px;">
+        </span>
+        <span class="text-muted">
+            / 
+            <input type="number" id="viewer-total" min="1" value="1" 
+                   style="width: 50px; border: 1px solid #ddd; border-radius: 6px; text-align: center; padding: 2px;">
+        </span>
+    </div>
+
+    <!-- Google Drive Iframe -->
+    <iframe id="viewer-frame" 
+            style="width: 100%; height: calc(100% - 110px); border: none; background: #f5f5f5;"
+            allow="autoplay"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation">
+    </iframe>
+
+    <!-- Loading Overlay -->
+    <div id="viewer-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; display: none;">
+        <div class="spinner"></div>
+        <p class="mt-2 small text-muted">Memuat file...</p>
+    </div>
+</div>
+
+<!-- Hidden input untuk menyimpan file ID -->
+<input type="hidden" id="current-file-id" value="{{ page.file_id }}">
+
+<script>
+// Handle back button
+function handleBackFromViewer() {
+    if (document.referrer) {
+        history.back();
+    } else {
+        window.location.href = '/{{ app }}/';
+    }
+}
+
+// Save progress function
+function saveViewerProgress() {
+    const currentPage = parseInt(document.getElementById('viewer-current').value) || 0;
+    const totalPages = parseInt(document.getElementById('viewer-total').value) || 1;
+    const fileId = document.getElementById('current-file-id').value;
+    
+    // Call appropriate app's save function
+    {% if app == "olympedia" %}
+    if (window.OLYMPEDIA && window.OLYMPEDIA.currentViewingId) {
+        const idx = OLYMPEDIA.data.findIndex(x => x.id === OLYMPEDIA.currentViewingId);
+        if (idx !== -1) {
+            OLYMPEDIA.data[idx].current = currentPage;
+            OLYMPEDIA.data[idx].total = totalPages;
+            OLYMPEDIA.saveData();
+            WOIPS.toast('Progress tersimpan!', 'success');
+            setTimeout(() => {
+                window.location.href = '/olympedia/';
+            }, 1000);
+        }
+    }
+    {% endif %}
+}
+
+// Initialize viewer
+document.addEventListener('DOMContentLoaded', () => {
+    const fileId = document.getElementById('current-file-id')?.value;
+    
+    {% if app == "olympedia" %}
+    // Find file in Olympedia data
+    if (window.OLYMPEDIA && fileId) {
+        const file = OLYMPEDIA.data.find(f => f.id === fileId);
+        if (file) {
+            document.getElementById('viewer-title').textContent = file.title;
+            document.getElementById('viewer-current').value = file.current || 0;
+            document.getElementById('viewer-total').value = file.total || 1;
+            document.getElementById('viewer-category').textContent = file.cat;
+            
+            // Build Google Drive URL
+            let driveUrl = file.url;
+            if (!driveUrl.includes('http')) {
+                driveUrl = `https://drive.google.com/file/d/${file.url}/preview`;
+            }
+            document.getElementById('viewer-frame').src = driveUrl;
+            
+            // Set current viewing ID
+            OLYMPEDIA.currentViewingId = fileId;
+        }
+    }
+    {% endif %}
+    
+    // Show loading if iframe takes time
+    const iframe = document.getElementById('viewer-frame');
+    iframe.addEventListener('load', () => {
+        document.getElementById('viewer-loading').style.display = 'none';
+    });
+});
+</script>

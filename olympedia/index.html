@@ -1,0 +1,235 @@
+-- layout: app
+app: olympedia
+title: OLYMPEDIA - Gudang Materi OSN IPS
+description: Akses ribuan materi OSN IPS gratis. Preview Google Drive, bookmark, dan tracking progress.
+
+
+<!-- Olympedia Main Content -->
+<div class="olympedia-content">
+    <!-- File List Container -->
+    <div id="olympedia-list" class="file-list-container">
+        <!-- Akan diisi oleh JavaScript -->
+    </div>
+
+    <!-- Floating Action Button untuk tambah materi (admin only) -->
+    <div class="fab-container" style="position: fixed; bottom: 100px; right: 20px; z-index: 100;">
+        <button class="btn-3d primary rounded-circle" 
+                onclick="OLYMPEDIA.showAddForm()"
+                style="width: 56px; height: 56px; border-radius: 50%; padding: 0;">
+            <i class="bi bi-plus-lg fs-4"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Hidden Viewer Modal (akan dipanggil saat klik file) -->
+<div class="modal fade" id="olympediaViewerModal" tabindex="-1">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+        <div class="modal-content border-0 rounded-0">
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title fw-800" id="viewerModalTitle">Loading...</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0 d-flex flex-column">
+                <!-- Progress Bar -->
+                <div class="d-flex bg-light p-2 justify-content-center gap-3 border-bottom small fw-bold">
+                    <span>
+                        Halaman: 
+                        <input type="number" id="modalViewerCurrent" min="0" value="0" 
+                               style="width: 50px; border: 1px solid #ddd; border-radius: 6px; text-align: center;">
+                    </span>
+                    <span class="text-muted">
+                        / 
+                        <input type="number" id="modalViewerTotal" min="1" value="1" 
+                               style="width: 50px; border: 1px solid #ddd; border-radius: 6px; text-align: center;">
+                    </span>
+                    <button class="btn-3d primary px-3 py-1" style="width: auto;" onclick="OLYMPEDIA.saveProgressFromModal()">
+                        SIMPAN
+                    </button>
+                </div>
+                <!-- Iframe -->
+                <iframe id="modalViewerFrame" style="width: 100%; flex: 1; border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form Modal untuk Tambah/Edit Materi -->
+<div class="modal fade" id="olympediaFormModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered mx-3">
+        <div class="modal-content border-0 rounded-4">
+            <div class="modal-body p-4">
+                <h5 class="fw-800 mb-4" id="formModalTitle">TAMBAH MATERI BARU</h5>
+                
+                <form id="olympediaForm" onsubmit="event.preventDefault(); OLYMPEDIA.saveForm();">
+                    <input type="hidden" id="formId" value="">
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">JUDUL MATERI</label>
+                        <input type="text" id="formTitle" class="form-control" required 
+                               placeholder="Contoh: Modul Geografi Lengkap">
+                    </div>
+                    
+                    <div class="row g-2 mb-3">
+                        <div class="col-7">
+                            <label class="form-label fw-700 small text-muted">KATEGORI</label>
+                            <select id="formCategory" class="form-select">
+                                <option>Geografi</option>
+                                <option>Ekonomi</option>
+                                <option>Sejarah</option>
+                                <option>Sosiologi</option>
+                                <option>Soal</option>
+                            </select>
+                        </div>
+                        <div class="col-5">
+                            <label class="form-label fw-700 small text-muted">ICON</label>
+                            <input type="text" id="formIcon" class="form-control text-center" value="📄">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-700 small text-muted">GOOGLE DRIVE ID</label>
+                        <input type="text" id="formUrl" class="form-control" required 
+                               placeholder="Contoh: 1abcDEFghIJKlmNOPQrstUVwxyz">
+                        <small class="text-muted">ID dari link Google Drive (format: https://drive.google.com/file/d/XXX/view)</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-700 small text-muted">TOTAL HALAMAN</label>
+                        <input type="number" id="formTotal" class="form-control" value="10" min="1">
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn-3d flex-grow-1" style="--bg: #BBB; --shadow: #888;" data-bs-dismiss="modal">
+                            BATAL
+                        </button>
+                        <button type="submit" class="btn-3d primary flex-grow-1">
+                            SIMPAN
+                        </button>
+                    </div>
+                    
+                    <div id="formDeleteContainer" class="mt-3 text-center" style="display: none;">
+                        <button type="button" class="btn btn-link text-danger fw-bold small p-0" 
+                                onclick="OLYMPEDIA.deleteCurrent()">
+                            Hapus Materi Ini
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Extended Olympedia functions for forms
+OLYMPEDIA.showAddForm = function() {
+    document.getElementById('formModalTitle').textContent = 'TAMBAH MATERI BARU';
+    document.getElementById('formId').value = '';
+    document.getElementById('formTitle').value = '';
+    document.getElementById('formCategory').value = 'Geografi';
+    document.getElementById('formIcon').value = '📄';
+    document.getElementById('formUrl').value = '';
+    document.getElementById('formTotal').value = '10';
+    document.getElementById('formDeleteContainer').style.display = 'none';
+    
+    new bootstrap.Modal(document.getElementById('olympediaFormModal')).show();
+};
+
+OLYMPEDIA.showEditForm = function(id) {
+    const item = this.data.find(x => x.id === id);
+    if (!item) return;
+    
+    document.getElementById('formModalTitle').textContent = 'EDIT MATERI';
+    document.getElementById('formId').value = item.id;
+    document.getElementById('formTitle').value = item.title;
+    document.getElementById('formCategory').value = item.cat;
+    document.getElementById('formIcon').value = item.tag || '📄';
+    document.getElementById('formUrl').value = item.url;
+    document.getElementById('formTotal').value = item.total;
+    document.getElementById('formDeleteContainer').style.display = 'block';
+    
+    new bootstrap.Modal(document.getElementById('olympediaFormModal')).show();
+};
+
+OLYMPEDIA.saveForm = function() {
+    const id = document.getElementById('formId').value;
+    const newItem = {
+        id: id || Date.now().toString(),
+        title: document.getElementById('formTitle').value,
+        cat: document.getElementById('formCategory').value,
+        tag: document.getElementById('formIcon').value,
+        url: document.getElementById('formUrl').value,
+        total: parseInt(document.getElementById('formTotal').value) || 1,
+        current: id ? (this.data.find(x => x.id === id)?.current || 0) : 0
+    };
+    
+    if (id) {
+        // Edit existing
+        this.data = this.data.map(x => x.id === id ? newItem : x);
+    } else {
+        // Add new
+        this.data.unshift(newItem);
+    }
+    
+    this.saveData();
+    bootstrap.Modal.getInstance(document.getElementById('olympediaFormModal')).hide();
+    WOIPS.toast('Materi berhasil disimpan!', 'success');
+};
+
+OLYMPEDIA.deleteCurrent = function() {
+    const id = document.getElementById('formId').value;
+    if (!id) return;
+    
+    WOIPS.confirm('Hapus Materi?', 'Data akan dihapus permanen.', () => {
+        this.data = this.data.filter(x => x.id !== id);
+        this.bookmarks = this.bookmarks.filter(b => b !== id);
+        this.saveData();
+        localStorage.setItem(WOIPS_CONFIG.apps.olympedia.bookmarkKey, JSON.stringify(this.bookmarks));
+        
+        bootstrap.Modal.getInstance(document.getElementById('olympediaFormModal')).hide();
+        WOIPS.toast('Materi dihapus', 'success');
+    });
+};
+
+// Override openViewer to use modal
+OLYMPEDIA.openViewer = function(id) {
+    const item = this.data.find(x => x.id === id);
+    if (!item) return;
+    
+    this.currentViewingId = id;
+    
+    document.getElementById('viewerModalTitle').textContent = item.title;
+    document.getElementById('modalViewerCurrent').value = item.current || 0;
+    document.getElementById('modalViewerTotal').value = item.total || 1;
+    
+    let driveUrl = item.url;
+    if (!driveUrl.includes('http')) {
+        driveUrl = `https://drive.google.com/file/d/${item.url}/preview`;
+    }
+    
+    document.getElementById('modalViewerFrame').src = driveUrl;
+    
+    new bootstrap.Modal(document.getElementById('olympediaViewerModal')).show();
+};
+
+OLYMPEDIA.saveProgressFromModal = function() {
+    const current = parseInt(document.getElementById('modalViewerCurrent').value) || 0;
+    const total = parseInt(document.getElementById('modalViewerTotal').value) || 1;
+    
+    const idx = this.data.findIndex(x => x.id === this.currentViewingId);
+    if (idx !== -1) {
+        this.data[idx].current = current;
+        this.data[idx].total = total;
+        this.saveData();
+        WOIPS.toast('Progress tersimpan!', 'success');
+        bootstrap.Modal.getInstance(document.getElementById('olympediaViewerModal')).hide();
+    }
+};
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    OLYMPEDIA.init();
+});
+</script>
+
+<!-- Link ke data materials.json -->
+<script src="/olympedia/data/materials.json"></script>

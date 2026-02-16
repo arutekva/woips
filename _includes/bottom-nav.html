@@ -1,0 +1,29 @@
+<!-- bottom-nav.html - Navigasi Bawah untuk WOIPS Platform -->
+{% assign current_app = page.app | default: "home" %}
+
+<nav class="bottom-nav">
+    {% for item in site.data.navigation.main_nav %}
+    <a href="{{ item.url }}" 
+       class="nav-link {% if current_app == item.app %}active{% endif %}"
+       data-app="{{ item.app }}"
+       aria-label="{{ item.name }}">
+        <i class="{{ item.icon }}"></i>
+        <span>{{ item.name }}</span>
+    </a>
+    {% endfor %}
+</nav>
+
+<!-- Tambahan styling untuk active states berdasarkan app -->
+<style>
+    /* Warna untuk masing-masing app */
+    {% for item in site.data.navigation.main_nav %}
+    {% if item.app != "home" %}
+    .nav-link[data-app="{{ item.app }}"].active {
+        color: {{ item.color }} !important;
+    }
+    .nav-link[data-app="{{ item.app }}"].active i {
+        color: {{ item.color }};
+    }
+    {% endif %}
+    {% endfor %}
+</style>

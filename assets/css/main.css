@@ -1,0 +1,355 @@
+/* ===== MAIN.CSS - GLOBAL STYLES UNTUK WOIPS PLATFORM ===== */
+/* Author: Studekasa | Version: 1.0.0 */
+
+:root {
+    /* Warna Global */
+    --primary-green: #58CC02;
+    --primary-green-shadow: #46A302;
+    --primary-blue: #1CB0F6;
+    --primary-blue-shadow: #1899D6;
+    --primary-yellow: #FFC800;
+    --primary-yellow-shadow: #E5A400;
+    --primary-red: #FF4B4B;
+    --primary-purple: #CE82FF;
+    --primary-purple-shadow: #AF66E3;
+    
+    /* Warna Aplikasi */
+    --app-olymedia: var(--primary-green);
+    --app-olymedia-light: #E8F9E8;
+    --app-olymap: var(--primary-blue);
+    --app-olymap-light: #E8F2FF;
+    --app-olymnote: var(--primary-purple);
+    --app-olymnote-light: #F3E8FF;
+    
+    /* Warna Teks */
+    --text-dark: #3C3C3C;
+    --text-muted: #838383;
+    --text-light: #FFFFFF;
+    
+    /* Warna UI */
+    --bg-body: #FFFFFF;
+    --bg-light: #F7F7F7;
+    --border-color: #E5E5E5;
+    --shadow-color: rgba(0,0,0,0.05);
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 20px;
+    --spacing-xxl: 24px;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 999px;
+    
+    /* Typography */
+    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-size-xs: 10px;
+    --font-size-sm: 11px;
+    --font-size-md: 13px;
+    --font-size-lg: 16px;
+    --font-size-xl: 20px;
+    
+    /* Transitions */
+    --transition-fast: 0.1s ease;
+    --transition-normal: 0.2s ease;
+    --transition-slow: 0.3s ease;
+    
+    /* Z-index */
+    --z-bottom-nav: 1000;
+    --z-header: 1000;
+    --z-modal: 2000;
+    --z-overlay: 3000;
+}
+
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    padding-bottom: 80px; /* Space for bottom nav */
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+}
+
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+.fw-800 { font-weight: 800; }
+
+.text-muted { color: var(--text-muted) !important; }
+.text-primary-green { color: var(--primary-green) !important; }
+.text-primary-blue { color: var(--primary-blue) !important; }
+.text-primary-purple { color: var(--primary-purple) !important; }
+
+/* ===== BUTTONS ===== */
+.btn-3d {
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    padding: 10px 16px;
+    transition: var(--transition-fast);
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+}
+
+.btn-3d:active {
+    transform: translateY(4px);
+    border-bottom-width: 0 !important;
+}
+
+.btn-3d.primary {
+    background: var(--primary-green);
+    color: white;
+    border-bottom-color: var(--primary-green-shadow);
+}
+
+.btn-3d.secondary {
+    background: var(--primary-blue);
+    color: white;
+    border-bottom-color: var(--primary-blue-shadow);
+}
+
+.btn-3d.warning {
+    background: var(--primary-yellow);
+    color: var(--text-dark);
+    border-bottom-color: var(--primary-yellow-shadow);
+}
+
+.btn-3d.danger {
+    background: var(--primary-red);
+    color: white;
+    border-bottom-color: #C43C3C;
+}
+
+.btn-3d.purple {
+    background: var(--primary-purple);
+    color: white;
+    border-bottom-color: var(--primary-purple-shadow);
+}
+
+.btn-3d:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ===== BOTTOM NAVIGATION ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: white;
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: var(--z-bottom-nav);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    box-shadow: 0 -4px 10px var(--shadow-color);
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: var(--font-size-xs);
+    gap: 4px;
+    flex: 1;
+    transition: var(--transition-normal);
+    padding: var(--spacing-sm) 0;
+}
+
+.nav-link i {
+    font-size: 24px;
+    transition: var(--transition-normal);
+}
+
+.nav-link.active {
+    color: var(--primary-green);
+}
+
+.nav-link[data-app="olymap"].active {
+    color: var(--primary-blue);
+}
+
+.nav-link[data-app="olymnote"].active {
+    color: var(--primary-purple);
+}
+
+.nav-link.active i {
+    transform: scale(1.1);
+}
+
+/* ===== HEADER ===== */
+.app-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: var(--z-header);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.brand img {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    object-fit: contain;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-name {
+    font-weight: 800;
+    font-size: var(--font-size-lg);
+    line-height: 1.2;
+}
+
+.brand-name.olymedia { color: var(--app-olymedia); }
+.brand-name.olymap { color: var(--app-olymap); }
+.brand-name.olymnote { color: var(--app-olymnote); }
+
+.brand-tagline {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* ===== CARDS ===== */
+.card {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    transition: var(--transition-fast);
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+.card.olymedia { border-color: var(--app-olymedia); }
+.card.olymap { border-color: var(--app-olymap); }
+.card.olymnote { border-color: var(--app-olymnote); }
+
+/* ===== UTILITIES ===== */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn var(--transition-normal);
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* ===== LOADING SPINNER ===== */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== MEDIA QUERIES ===== */
+@media (min-width: 768px) {
+    body {
+        padding-bottom: 0;
+    }
+    
+    .bottom-nav {
+        position: static;
+        border-top: none;
+        box-shadow: none;
+        height: auto;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .bottom-nav,
+    .app-header {
+        display: none;
+    }
+    
+    body {
+        padding: 0;
+    }
+  }
